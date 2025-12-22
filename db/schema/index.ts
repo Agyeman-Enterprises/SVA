@@ -12,3 +12,5 @@ export * from "./offline";
 export * from "./teacher_development";
 export * from "./family";
 export * from "./community";
+export * from "./devices";
+export * from "./engineering";
