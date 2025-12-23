@@ -1,3 +1,4 @@
+// @ts-ignore - bcryptjs types are included in the package
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { db } from "@/db";
@@ -15,7 +16,10 @@ export interface JWTPayload {
   scope?: "district" | "school" | "campus" | "pod";
 }
 
-const JWT_SECRET = env.JWT_SECRET;
+// JWT_SECRET from environment (validated when accessed via lazy proxy)
+function getJwtSecret(): string {
+  return env.JWT_SECRET;
+}
 
 /**
  * Hash a password using bcrypt
@@ -35,7 +39,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
  * Generate a JWT token for a user
  */
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: "7d" });
 }
 
 /**
@@ -43,7 +47,7 @@ export function generateToken(payload: JWTPayload): string {
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, getJwtSecret()) as JWTPayload;
   } catch {
     return null;
   }

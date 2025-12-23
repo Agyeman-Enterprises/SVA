@@ -1,0 +1,821 @@
+EPIC 12: Applied Engineering Curriculum
+
+Building Makers, Not Consumers
+
+K-12 Engineering Track ΓÇö Students Build Their Own Devices
+
+Version 1.0 ΓÇö December 2025
+
+Part I: The Philosophy
+
+"This is what colonialism took. The confidence that we can build things. The knowledge that technology is not magic from elsewhere ΓÇö it's engineering, and engineering can be learned."
+
+Africa does not need more consumers of technology. Africa needs producers. Makers. Engineers. Problem solvers.
+
+A child who has taken apart a radio at age 8, soldered their first circuit at 10, built their own phone at 14, and designed their own laptop at 16 ΓÇö that child does not fear technology. They own it.
+
+They don't wait for someone from Europe to come fix the generator. They fix it themselves. They don't wonder how the water pump works. They can design one.
+
+The SVA Engineering Covenant
+
+Start early. Engineering begins in Kindergarten, not university.
+
+Hands first. Theory follows practice, not the other way around.
+
+Real projects. Not simulations ΓÇö working devices that students keep and use.
+
+Vertical mentorship. Seniors teach juniors. Learning becomes teaching.
+
+Economic dignity. Graduates have a trade, not just a certificate.
+
+What Students Graduate With
+
+A phone they built with their own hands
+
+A laptop they designed and assembled
+
+The skills to repair any device in their village
+
+CAD, 3D printing, electronics, and programming skills
+
+The confidence to start a business or pursue engineering
+
+Experience teaching others ΓÇö the foundation of leadership
+
+
+
+Part II: The K-12 Engineering Progression
+
+Overview
+
+Grade
+
+Theme
+
+Capstone Project
+
+K-2
+
+Explorers
+
+Take apart 10 devices, name all the parts
+
+3-4
+
+Circuit Builders
+
+Build a working flashlight with switch
+
+5-6
+
+Code Meets World
+
+micro:bit weather station
+
+7-8
+
+Phone Builders
+
+BUILD YOUR OWN SVA PHONE
+
+9-10
+
+Laptop Engineers
+
+BUILD YOUR OWN SVA LAPTOP
+
+11-12
+
+Master Makers
+
+Design improvement + teach junior cohort
+
+Integration with Pods
+
+The engineering curriculum integrates with the Pod system for vertical mentorship:
+
+Grade 11-12 seniors mentor Grade 7-8 on phone builds
+
+Grade 9-10 students who built phones mentor Grade 5-6 on micro:bit
+
+Grade 7-8 help Grade 3-4 with circuit projects
+
+Teaching is assessed ΓÇö it's how mastery is demonstrated
+
+This is T0ΓåÆT1 teacher formation happening organically. A student who can build AND teach is ready to lead.
+
+
+
+Part III: Phase 1 ΓÇö Explorers (K-2)
+
+Theme: Curiosity, observation, fearlessness with technology
+
+Core Philosophy
+
+Before children can build, they must lose their fear of breaking. In these years, we systematically take things apart. Nothing is precious. Everything is a learning opportunity.
+
+Yearly Progression
+
+Kindergarten: What's Inside?
+
+Projects:
+
+Take apart broken toys (supervised, safe items only)
+
+Sort parts: plastic, metal, wire, battery
+
+Learn tool names: screwdriver, pliers, magnifying glass
+
+"Parts Museum" ΓÇö display of interesting components
+
+Skills:
+
+Fine motor: using screwdrivers, holding small parts
+
+Vocabulary: battery, wire, motor, speaker, screen
+
+Safety: what not to touch, how to ask for help
+
+Grade 1: How Does It Move?
+
+Projects:
+
+Take apart wind-up toys ΓÇö discover gears and springs
+
+Take apart battery toys ΓÇö find motors, switches, wires
+
+Simple machines hunt: levers, wheels, pulleys in daily life
+
+Build simple lever and pulley from sticks and string
+
+Skills:
+
+Observation: drawing what they see inside
+
+Vocabulary: gear, spring, axle, motor, switch
+
+Prediction: "what happens if I...?"
+
+Grade 2: Where Does the Power Come From?
+
+Projects:
+
+Take apart flashlights ΓÇö complete circuit tracing
+
+Take apart old radios (with supervision)
+
+Battery experiments: what conducts, what doesn't
+
+Build first circuit: battery + wire + LED
+
+Capstone: Take-Apart Portfolio
+
+Document 10 devices taken apart. For each: photo, parts list, "how I think it works."
+
+
+
+Part IV: Phase 2 ΓÇö Circuit Builders (Grade 3-4)
+
+Theme: From observation to creation ΓÇö building simple electronics
+
+Core Philosophy
+
+Now that students understand what's inside devices, they begin building. Every project works. Every student succeeds. The goal is confidence, not complexity.
+
+Yearly Progression
+
+Grade 3: Circuits That Work
+
+Semester 1: Basic Circuits
+
+Battery + LED: the simplest circuit
+
+Adding a switch: control
+
+Series vs parallel: why do Christmas lights fail?
+
+Ohm's law (intuitive): bigger battery = brighter light
+
+Semester 2: Useful Circuits
+
+Build a flashlight (keep it!)
+
+Build a continuity tester
+
+Build a simple alarm (door sensor)
+
+Tools Introduced:
+
+Multimeter (measuring voltage)
+
+Wire strippers
+
+Breadboard
+
+Grade 4: Soldering and Sensors
+
+Semester 1: First Solder
+
+Soldering safety and technique
+
+Through-hole soldering practice boards
+
+Build a blinking LED kit (555 timer)
+
+Build an FM radio kit
+
+Semester 2: Sensors
+
+Light sensor (photoresistor) ΓÇö automatic night light
+
+Temperature sensor ΓÇö simple thermometer
+
+Touch sensor ΓÇö capacitive switch
+
+Capstone: Working Flashlight
+
+Design and solder a custom flashlight with switch. Must work reliably. Student keeps it.
+
+
+
+Part V: Phase 3 ΓÇö Code Meets World (Grade 5-6)
+
+Theme: Programming physical systems ΓÇö software controlling hardware
+
+Core Philosophy
+
+Students already know Scratch from CS curriculum. Now code controls real things: lights, motors, sensors. The digital becomes physical.
+
+Platform: micro:bit
+
+The BBC micro:bit is ideal for this phase:
+
+$15-20 per unit
+
+Block-based programming (MakeCode) ΓÇö familiar from Scratch
+
+Built-in sensors: accelerometer, compass, temperature, light
+
+LED matrix for output
+
+GPIO pins for expansion
+
+Works offline once programmed
+
+Yearly Progression
+
+Grade 5: micro:bit Fundamentals
+
+Semester 1: Built-in Features
+
+LED patterns and animations
+
+Button inputs ΓÇö interactive games
+
+Accelerometer ΓÇö step counter, shake detector
+
+Radio communication ΓÇö micro:bit to micro:bit messaging
+
+Semester 2: External Components
+
+Connect external LEDs via GPIO
+
+Control a servo motor
+
+Read analog sensors
+
+Build a simple robot
+
+Grade 6: Applied Projects
+
+Semester 1: Environmental Monitoring
+
+Weather station: temperature, light, humidity sensors
+
+Data logging to file
+
+Graphing data in spreadsheets
+
+Scientific method: hypothesis, measurement, analysis
+
+Semester 2: Community Problems
+
+Identify a problem in school/community
+
+Design a micro:bit solution
+
+Build, test, iterate
+
+Present to community
+
+Capstone: Weather Station
+
+Working weather station deployed for 1 month. Collect data. Analyze trends. Present findings.
+
+
+
+Part VI: Phase 4 ΓÇö Phone Builders (Grade 7-8)
+
+Theme: Building the SVA Phone ΓÇö a working smartphone from components
+
+Core Philosophy
+
+This is where everything comes together. Students don't just learn about phones ΓÇö they BUILD their own phone. The device they use for learning? They made it.
+
+What students build:
+
+The SVA Phone as specified in EPIC 11: SC9863A mainboard, 4.0" display, 4000mAh battery, solar charging, rugged 3D-printed enclosure.
+
+Two-Year Build Sequence
+
+Grade 7: Components and Assembly
+
+Semester 1: Understanding the Architecture
+
+Phone teardown lab ΓÇö dissect old phones, identify every component
+
+Read schematics ΓÇö power flow, data paths
+
+Soldering certification ΓÇö SMD practice boards
+
+Power systems ΓÇö battery chemistry, charging circuits, MPPT
+
+Test equipment ΓÇö multimeter, oscilloscope basics
+
+Semester 2: First Build
+
+Receive SC9863A mainboard ΓÇö power on test
+
+Connect display ΓÇö verify video output
+
+Connect battery ΓÇö charging circuit assembly
+
+Connect solar panel ΓÇö MPPT circuit build
+
+Flash Android Go ΓÇö first boot of THEIR phone
+
+Grade 8: Enclosure and Completion
+
+Semester 1: CAD and Fabrication
+
+CAD fundamentals ΓÇö Fusion 360 or FreeCAD
+
+Measure components precisely
+
+Design enclosure ΓÇö solar pocket, button cutouts, ports
+
+3D printing ΓÇö slicing, supports, material selection
+
+Iterate ΓÇö fit check, revise, reprint
+
+Semester 2: Integration and Testing
+
+Final assembly ΓÇö all components in enclosure
+
+Drop test ΓÇö 1m onto concrete
+
+Battery life test ΓÇö video playback duration
+
+Solar charging test ΓÇö measurable current in sun
+
+Install Kolibri ΓÇö sync with school hub
+
+Documentation ΓÇö assembly guide for next cohort
+
+Capstone: Working SVA Phone
+
+Student keeps their phone. It becomes their primary learning device for the rest of their education.
+
+Assessment Criteria
+
+Criterion
+
+Weight
+
+Evidence
+
+Phone powers on and functions
+
+30%
+
+Demonstration
+
+Solar charging works
+
+15%
+
+Current measurement
+
+Enclosure is rugged (drop test)
+
+15%
+
+Survival test
+
+Can explain how each part works
+
+20%
+
+Oral exam
+
+Documentation quality
+
+10%
+
+Written guide
+
+Helped a junior student
+
+10%
+
+Mentor log
+
+
+
+Part VII: Phase 5 ΓÇö Laptop Engineers (Grade 9-10)
+
+Theme: Building the SVA Laptop ΓÇö a full computer from modules
+
+Core Philosophy
+
+Students have built a phone. Now they build a laptop. More complex, more capability, more engineering. By the end, they have both devices ΓÇö and can repair anything.
+
+What students build:
+
+The SVA Laptop as specified in EPIC 11: Radxa CM3 SoM, 11.6" display, 3S battery, USB keyboard, rugged enclosure with working hinge.
+
+Two-Year Build Sequence
+
+Grade 9: Architecture and Power Systems
+
+Semester 1: Computer Architecture
+
+Laptop teardown ΓÇö identify all subsystems
+
+SoC vs SoM ΓÇö why modularity matters
+
+Display interfaces ΓÇö eDP, HDMI, LVDS
+
+Input devices ΓÇö USB HID protocol
+
+Storage ΓÇö eMMC, SSD, SD cards
+
+Semester 2: Power Engineering
+
+Multi-cell batteries ΓÇö series vs parallel, balancing
+
+BMS design ΓÇö protection, balancing, fuel gauge
+
+USB-C Power Delivery ΓÇö negotiation, profiles
+
+DC-DC conversion ΓÇö buck, boost, efficiency
+
+Build the power system ΓÇö 3S pack + BMS + USB-C PD
+
+Grade 10: Mechanical Design and Integration
+
+Semester 1: Industrial Design
+
+Advanced CAD ΓÇö assemblies, constraints, motion
+
+Hinge design ΓÇö durability, angle stops, cable routing
+
+Keyboard integration ΓÇö mounting, cable management
+
+Thermal design ΓÇö heat paths, vents, thermal pads
+
+DFM ΓÇö design for manufacturability
+
+Semester 2: Full Build
+
+Print enclosure ΓÇö PETG shell, TPU bumpers
+
+Assemble all components
+
+Flash Armbian Linux
+
+Install Kolibri, development tools
+
+Durability testing ΓÇö drop, hinge cycling, thermal
+
+Documentation ΓÇö full assembly guide
+
+Capstone: Working SVA Laptop
+
+Student keeps their laptop. It becomes their primary productivity device ΓÇö coding, writing, creating.
+
+Skills Matrix
+
+Category
+
+Specific Skills
+
+Assessment
+
+Electronics
+
+Power systems, USB-C PD, display interfaces
+
+Working laptop
+
+Mechanical
+
+CAD, 3D printing, hinge design, thermal
+
+Enclosure quality
+
+Software
+
+Linux, flashing, configuration
+
+System setup
+
+Documentation
+
+Technical writing, diagrams, photos
+
+Assembly guide
+
+Teaching
+
+Mentoring Grade 7-8 on phone builds
+
+Mentor log
+
+
+
+Part VIII: Phase 6 ΓÇö Master Makers (Grade 11-12)
+
+Theme: Innovation, leadership, and teaching the next generation
+
+Core Philosophy
+
+Seniors have built both devices. Now they become engineers and teachers. They improve the designs. They mentor juniors. They prepare for careers or university.
+
+Two Tracks
+
+Track A: Engineering Innovation
+
+Goal: Improve the SVA device designs
+
+Analyze failure modes from field data
+
+Propose design improvements
+
+Prototype and test improvements
+
+Document changes for production
+
+Example projects:
+
+Better hinge mechanism (longer life)
+
+Improved solar charging efficiency
+
+Dust/water resistance improvements
+
+Cost reduction without quality loss
+
+Accessibility features for disabled students
+
+Track B: Teaching and Leadership
+
+Goal: Become a certified engineering mentor
+
+Lead phone build sessions for Grade 7-8
+
+Develop improved teaching materials
+
+Assess junior students' work
+
+Troubleshoot failed builds
+
+Document common mistakes and solutions
+
+Certification:
+
+Students who complete Track B earn "SVA Engineering Mentor" certification ΓÇö recognized credential for teaching or repair business.
+
+Track C: Entrepreneurship (Optional)
+
+Goal: Start a device repair business
+
+Business plan development
+
+Repair pricing and inventory
+
+Customer service skills
+
+Pilot repair service in community
+
+Integration with Teacher Formation
+
+The Teaching track directly feeds the SVA T0ΓåÆT1 teacher pipeline:
+
+Students graduate as T0-certified engineering instructors
+
+Can immediately teach Grade 3-8 engineering curriculum
+
+Continue to T1 with additional pedagogy training
+
+Alumni become the engineering faculty of future SVA sites
+
+
+
+Part IX: Materials and Infrastructure
+
+Cost Per Student (Engineering Track)
+
+Phase
+
+Materials Cost
+
+Notes
+
+K-2 Explorers
+
+~$5
+
+Donated broken devices, basic tools
+
+3-4 Circuit Builders
+
+~$20
+
+Components, solder kits
+
+5-6 Code Meets World
+
+~$25
+
+micro:bit + sensors
+
+7-8 Phone Builders
+
+~$60
+
+Phone components (student keeps)
+
+9-10 Laptop Engineers
+
+~$150
+
+Laptop components (student keeps)
+
+11-12 Master Makers
+
+~$30
+
+Prototyping materials
+
+TOTAL K-12
+
+~$290
+
+Includes devices student keeps
+
+Shared Equipment (Per Learning Center)
+
+Equipment
+
+Cost
+
+Serves
+
+Soldering stations (5x)
+
+$150
+
+50 students
+
+Multimeters (10x)
+
+$100
+
+50 students
+
+3D printer (1x)
+
+$300
+
+All students
+
+Oscilloscope (1x)
+
+$200
+
+Advanced students
+
+Hand tools (sets)
+
+$100
+
+50 students
+
+Component inventory
+
+$200
+
+Ongoing replenishment
+
+TOTAL EQUIPMENT
+
+~$1,050
+
+One-time + maintenance
+
+
+
+Part X: Cursor Execution Tickets
+
+EPIC 12: Applied Engineering Curriculum
+
+Goal: Track student engineering progression, projects, and mentorship
+
+Ticket 12.1: Engineering Progression Schema
+
+File: src/db/schema/engineering.ts
+
+Tables: engineeringPhases, engineeringProjects, engineeringSkills, projectSubmissions
+
+Acceptance: Can track student from K teardowns to G12 mentorship
+
+Ticket 12.2: Project Tracking API
+
+File: src/api/engineering/projects.ts
+
+Task: CRUD for engineering projects with photo/video evidence
+
+Acceptance: Student can submit phone/laptop build with documentation
+
+Ticket 12.3: Mentorship Tracking
+
+File: src/api/engineering/mentorship.ts
+
+Task: Log mentor sessions, junior progress, mentor assessments
+
+Integration: Links to Pod mentorship system
+
+Acceptance: Senior mentor hours contribute to graduation requirements
+
+Ticket 12.4: Device Build Workflow
+
+File: src/api/engineering/device-build.ts
+
+Task: Step-by-step build tracking with checkpoints
+
+Features: Component checklist, test results, issue logging
+
+Acceptance: Can track a phone build from first power-on to final drop test
+
+Ticket 12.5: Skills Certification
+
+File: src/api/engineering/certifications.ts
+
+Task: Issue certificates for completed skills (soldering, CAD, etc.)
+
+Credentials: SVA Engineering Mentor certification for Grade 12
+
+Acceptance: Verifiable certificates with QR codes
+
+Ticket 12.6: Engineering Dashboard
+
+File: src/components/engineering/Dashboard.tsx
+
+Views: Student progression, project gallery, mentor matching
+
+Acceptance: Teachers can see all students' engineering journey at a glance
+
+
+
+Part XI: Success Criteria
+
+Student Outcomes
+
+100% of Grade 8 students complete a working phone
+
+100% of Grade 10 students complete a working laptop
+
+90%+ of devices pass durability testing
+
+Every senior mentors at least 2 junior students
+
+Graduates can diagnose and repair common device failures
+
+Program Outcomes
+
+Alumni start repair businesses in their communities
+
+Alumni pursue engineering/technology in higher education
+
+Alumni return as T0 engineering instructors
+
+Device designs improve year-over-year from student innovations
+
+The Ultimate Measure
+
+"When a water pump breaks in the village, our graduates are the ones who fix it. When the school needs new equipment, our graduates can build it. When technology seems like magic, our graduates know it's just engineering ΓÇö and they can do it themselves."
+
+ΓÇö End of EPIC 12 Addendum ΓÇö
+
+

@@ -1,0 +1,83 @@
+/* SVA Stat Card Component - Pure CSS (NO Tailwind) */
+/* Reference: Dashboard.css lines 378-463 */
+
+.sva-stat-card {
+  background: var(--sva-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  border: 1px solid var(--sva-gray-200);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.sva-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.sva-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sva-stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sva-stat-streak .sva-stat-icon {
+  background: var(--sva-gold-subtle);
+  color: var(--sva-gold);
+}
+
+.sva-stat-points .sva-stat-icon {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: var(--sva-gold-dark);
+}
+
+.sva-stat-courses .sva-stat-icon {
+  background: var(--sva-green-subtle);
+  color: var(--sva-green);
+}
+
+.sva-stat-assignments .sva-stat-icon {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.sva-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.sva-stat-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--sva-gray-800);
+  line-height: 1.2;
+}
+
+.sva-stat-label {
+  font-size: 0.8rem;
+  color: var(--sva-gray-500);
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+.sva-stat-decoration {
+  position: absolute;
+  right: var(--space-md);
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+

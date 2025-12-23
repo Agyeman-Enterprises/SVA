@@ -1,10 +1,11 @@
 import { db } from "@/db";
-import { courses, courseVersions, units, lessons, pods, podCourseAssignments, userMemberships } from "@/db/schema";
+import { courses, courseVersions, units, lessons, pods, podCourseAssignments, userMemberships, progressEvents } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import ProgressIndicator from "@/app/components/ProgressIndicator";
 
 /**
  * Curriculum Read Path
@@ -93,7 +94,7 @@ export default async function CourseVersionPage({
     .where(eq(units.courseVersionId, courseVersion.id))
     .orderBy(units.unitNumber);
 
-  // Get lessons for each unit
+  // Get lessons for each unit and progress
   const unitsWithLessons = await Promise.all(
     courseUnits.map(async (unit) => {
       const unitLessons = await db
@@ -101,8 +102,37 @@ export default async function CourseVersionPage({
         .from(lessons)
         .where(eq(lessons.unitId, unit.id))
         .orderBy(lessons.lessonNumber);
-      return { unit, lessons: unitLessons };
+      
+      // Get progress for each lesson
+      const lessonsWithProgress = await Promise.all(
+        unitLessons.map(async (lesson) => {
+          const progress = await db
+            .select()
+            .from(progressEvents)
+            .where(
+              and(
+                eq(progressEvents.studentUserId, payload.userId),
+                eq(progressEvents.lessonId, lesson.id),
+                eq(progressEvents.eventType, "lesson_completed" as any)
+              )
+            )
+            .limit(1);
+          return {
+            ...lesson,
+            completed: progress.length > 0,
+          };
+        })
+      );
+      
+      return { unit, lessons: lessonsWithProgress };
     })
+  );
+
+  // Calculate overall progress
+  const totalLessons = unitsWithLessons.reduce((acc, { lessons }) => acc + lessons.length, 0);
+  const completedLessons = unitsWithLessons.reduce(
+    (acc, { lessons }) => acc + lessons.filter((l: any) => l.completed).length,
+    0
   );
 
   return (
@@ -133,7 +163,16 @@ export default async function CourseVersionPage({
         </div>
         <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
           <span>📚 {courseUnits.length} Units</span>
-          <span>📖 {unitsWithLessons.reduce((acc, { lessons }) => acc + lessons.length, 0)} Lessons</span>
+          <span>📖 {totalLessons} Lessons</span>
+        </div>
+        <div className="mt-4">
+          <ProgressIndicator
+            current={completedLessons}
+            total={totalLessons}
+            label="Course Progress"
+            showPercentage={true}
+            size="md"
+          />
         </div>
       </div>
 
@@ -169,19 +208,26 @@ export default async function CourseVersionPage({
                     href={`/student/lessons/${lesson.id}`}
                     className="group flex items-center space-x-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
                   >
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-800 group-hover:text-blue-600 dark:group-hover:text-blue-400 font-medium text-sm">
-                      {lesson.lessonNumber}
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm ${
+                      (lesson as any).completed
+                        ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-800 group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                    }`}>
+                      {(lesson as any).completed ? "✓" : lesson.lessonNumber}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
                         {lesson.title}
                       </p>
-                      {lesson.objectives && (
+                      {lesson.objectives && Array.isArray(lesson.objectives) && lesson.objectives.length > 0 && (
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-1">
-                          {lesson.objectives}
+                          {lesson.objectives[0]}
                         </p>
                       )}
                     </div>
+                    {(lesson as any).completed && (
+                      <span className="text-xs text-green-600 dark:text-green-400 font-medium">Completed</span>
+                    )}
                     <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400"
                       fill="none"

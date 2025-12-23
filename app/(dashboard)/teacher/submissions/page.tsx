@@ -25,7 +25,7 @@ export default async function SubmissionsPage() {
     .innerJoin(users, eq(submissions.studentUserId, users.id))
     .innerJoin(lessonAssignments, eq(submissions.lessonAssignmentId, lessonAssignments.id))
     .innerJoin(lessons, eq(lessonAssignments.lessonId, lessons.id))
-    .where(eq(submissions.status, "submitted"))
+    .where(eq(submissions.status, "submitted" as any))
     .limit(50);
 
   // Get reviewed submissions
@@ -39,7 +39,7 @@ export default async function SubmissionsPage() {
     .innerJoin(users, eq(submissions.studentUserId, users.id))
     .innerJoin(lessonAssignments, eq(submissions.lessonAssignmentId, lessonAssignments.id))
     .innerJoin(lessons, eq(lessonAssignments.lessonId, lessons.id))
-    .where(eq(submissions.status, "reviewed"))
+    .where(eq(submissions.status, "graded" as any))
     .limit(20);
 
   const statusColors: Record<string, string> = {
@@ -158,9 +158,9 @@ export default async function SubmissionsPage() {
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                         {lesson.title}
                       </p>
-                      {submission.reviewedAt && (
+                      {submission.updatedAt && submission.status === "graded" && (
                         <p className="text-xs text-gray-500 dark:text-gray-500">
-                          Reviewed: {new Date(submission.reviewedAt).toLocaleString()}
+                          Reviewed: {new Date(submission.updatedAt).toLocaleString()}
                         </p>
                       )}
                     </div>

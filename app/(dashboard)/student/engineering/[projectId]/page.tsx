@@ -97,7 +97,7 @@ export default async function EngineeringProjectPage({
                 Submission Status
               </h3>
               <p className="text-sm text-blue-800 dark:text-blue-300 capitalize">
-                {submission.status.replace("_", " ")}
+                {submission.status.replace(/_/g, " ")}
               </p>
               {submission.submittedAt && (
                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">

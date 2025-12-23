@@ -1,0 +1,936 @@
+EPIC 11: SVA Education Device
+
+Hardware Layer Specification
+
+Addendum to SVA Vision Architecture & Cursor Specification
+
+Version 1.0 ΓÇö December 2025
+
+Executive Summary
+
+This addendum specifies the SVA Education Device ΓÇö custom hardware designed to run the SVA Learning Operating System in resource-limited environments. The device ecosystem consists of two form factors:
+
+SVA Phone: $50 rugged smartphone with solar trickle charging
+
+SVA Laptop: $200 education laptop for productivity and coding
+
+Combined cost per student: $250 (at scale: $180-200). Both devices run Kolibri for offline-first content delivery, syncing with Raspberry Pi hubs at learning centers.
+
+Design principle: If it works in a refugee camp, it will work anywhere.
+
+
+
+Part I: The Hardware Covenant
+
+SVA controls the full stack. The software we build needs hardware to run on ΓÇö hardware that works when:
+
+There's no reliable electricity for days
+
+The internet hasn't worked in weeks
+
+Dust, heat, and humidity destroy consumer devices
+
+Repair technicians and spare parts don't exist locally
+
+Students share devices with siblings and carry them kilometers to school
+
+The SVA Education Device is the physical manifestation of offline-first architecture.
+
+Non-Negotiables
+
+Principle
+
+Implementation
+
+Days without power
+
+4000mAh battery + solar trickle charging + USB-C fast charge
+
+Weeks without internet
+
+All content pre-loaded, sync when connectivity appears
+
+Rugged for Africa
+
+IP54 rating, rubberized TPU bumpers, 1m drop survival
+
+Locally repairable
+
+Standard components, snap-together shell, brass inserts
+
+Affordable at scale
+
+$50 phone / $200 laptop ΓÇö comparable to Chromebook economics
+
+No surveillance
+
+Locked down for education, no tracking beyond learning analytics
+
+
+
+Part II: SVA Phone Specifications
+
+Hardware Architecture
+
+Component
+
+Specification
+
+SoC
+
+Unisoc SC9863A ΓÇö 8x Cortex-A55 @ 1.6GHz, PowerVR GE8322 GPU, Cat-7 LTE
+
+Display
+
+4.0" IPS LCD, 480x960 resolution, sunlight readable
+
+RAM
+
+2GB LPDDR3
+
+Storage
+
+16GB eMMC + MicroSD slot (up to 128GB)
+
+Battery
+
+4000mAh LiPo with protection circuit
+
+Primary Power
+
+USB-C (5V/2A-3A) ΓÇö fast charge everywhere
+
+Solar Power
+
+5V/1W monocrystalline panel laminated in back cover, CN3791 MPPT controller
+
+Connectivity
+
+4G LTE (African bands including B28), WiFi 2.4GHz, Bluetooth 4.2, FM radio
+
+OS
+
+Android Go 11 ΓÇö optimized for 1-2GB RAM
+
+Content Platform
+
+Kolibri Android app ΓÇö offline-first, syncs with hub
+
+Power System Architecture
+
+The phone operates in two charging modes:
+
+Primary: USB-C Fast Charge
+
+IP5306 / ETA6884 charge controller
+
+Full charge in ~2 hours
+
+USB-C cables available everywhere
+
+Secondary: Solar Trickle Charge
+
+CN3791 MPPT controller (~$0.30)
+
+5V @ 150-200mA in direct sun (0.75-1W peak)
+
+Full charge via solar: 15-20 hours (emergency/trickle mode)
+
+Clear polycarbonate window protects solar cell
+
+Bill of Materials (Phone)
+
+Component
+
+Est. Cost
+
+Source
+
+Unisoc SC9863A + RF
+
+$5
+
+Unisoc distro
+
+2GB RAM + 16GB eMMC
+
+$4
+
+Standard
+
+4.0" IPS LCD + touch
+
+$5
+
+AliExpress
+
+4000mAh battery
+
+$3
+
+AliExpress
+
+Solar cell + MPPT
+
+$3
+
+AliExpress/LCSC
+
+PCB, passives, connectors
+
+$3
+
+JLCPCB
+
+Enclosure (rubberized)
+
+$2
+
+3D print / mold
+
+Assembly
+
+$2
+
+Shenzhen ODM
+
+TOTAL BOM
+
+~$27
+
+
+
+Retail Target (2x markup)
+
+~$50
+
+
+
+Enclosure Design
+
+3D printed prototype, injection molded at scale:
+
+Main shell: PETG (impact resistant, UV stable)
+
+Corner bumpers: TPU overmold (shock absorption)
+
+Solar pocket: Recessed 1-2mm with clear polycarbonate window
+
+Sealing: Silicone gasket channel around seam (IP54)
+
+Assembly: Heat-set brass inserts (M2.5), snap-together design
+
+
+
+Part III: SVA Laptop Specifications
+
+Hardware Architecture
+
+Component
+
+Specification
+
+SoM
+
+Radxa CM3 (RK3566) ΓÇö 4x Cortex-A55, Mali-G52 GPU, 4K video decode
+
+RAM
+
+4GB LPDDR4
+
+Storage
+
+32-64GB eMMC + MicroSD slot
+
+Display
+
+11.6" IPS 1920x1080 eDP panel
+
+Battery
+
+3S 18650 pack (11.1V, 38Wh) ΓÇö 6-8 hours runtime
+
+Input
+
+USB slim membrane keyboard + trackpad module
+
+WiFi/BT
+
+RTL8821CS or similar
+
+Power
+
+USB-C PD 30W charging + optional solar panel in lid
+
+OS
+
+Armbian (Debian-based Linux) ΓÇö excellent RK3566 support
+
+Content Platform
+
+Kolibri Linux client ΓÇö full browser-based experience
+
+Why ARM over x86
+
+Factor
+
+ARM (RK3568)
+
+x86 (Intel N100)
+
+BOM Cost
+
+~$100 Γ£ô
+
+~$140
+
+Power Efficiency
+
+Better battery Γ£ô
+
+Higher draw
+
+Kolibri Support
+
+Works Γ£ô
+
+Works Γ£ô
+
+Linux Support
+
+Excellent (Armbian) Γ£ô
+
+Excellent Γ£ô
+
+Windows Apps
+
+No
+
+Yes Γ£ô
+
+Supply Chain
+
+Shenzhen loves Rockchip Γ£ô
+
+Intel everywhere Γ£ô
+
+Verdict: Unless Windows is specifically required, ARM delivers better value for education.
+
+Bill of Materials (Laptop)
+
+Component
+
+Est. Cost
+
+Source
+
+Radxa CM3 SoM (4GB/32GB)
+
+$55
+
+Radxa/Allnet
+
+CM3 IO Board (carrier)
+
+$25
+
+Radxa
+
+11.6" IPS eDP display
+
+$35
+
+AliExpress
+
+eDP controller board
+
+$10
+
+AliExpress
+
+USB keyboard + trackpad
+
+$20
+
+AliExpress
+
+3S 18650 battery pack + BMS
+
+$23
+
+AliExpress
+
+USB-C PD charger circuit
+
+$12
+
+AliExpress
+
+Hinges (metal)
+
+$5
+
+AliExpress
+
+Enclosure (3D print/mold)
+
+$15
+
+PETG + TPU
+
+Cables, misc
+
+$10
+
+Various
+
+TOTAL BOM
+
+~$110
+
+
+
+Retail Target (2x markup)
+
+~$200
+
+
+
+Rugged Education Features
+
+Borrowed from OLPC and Chromebook playbooks:
+
+Spill-resistant keyboard: Drain channels under keys, sealed membrane
+
+Rubberized bumpers: TPU corners (same design language as phone)
+
+Handle/carry: Integrated indent or strap loop
+
+Screen protection: Recessed bezel, optional Gorilla Glass
+
+Hinge durability: Metal hinge, 180┬░ lay-flat capability
+
+Easy repair: Snap-together shell, standard screws
+
+Theft deterrent: Bright color, custom SVA branding, no resale value
+
+
+
+Part IV: Content Delivery Ecosystem
+
+Kolibri: The Platform
+
+Kolibri is the open-source, offline-first education platform developed by Learning Equality. It's battle-tested in refugee camps by UNHCR and deployed in 200+ countries.
+
+Why Kolibri:
+
+100% offline operation ΓÇö works without internet for weeks
+
+Free and open source ΓÇö $0 licensing at any scale
+
+173+ languages with pre-built content
+
+Khan Academy, CK-12, PhET simulations included
+
+Runs on Raspberry Pi ($35 server)
+
+Native Android app + Linux client
+
+Built-in progress tracking and coach dashboard
+
+Deployment Architecture
+
+Each SVA learning center operates a Raspberry Pi 4 hub:
+
+Hub runs Kolibri Server + WiFi access point
+
+SVA Phones/Laptops connect to hub WiFi
+
+Content syncs to devices for offline use
+
+Progress uploads when connectivity available
+
+Hub syncs to cloud when internet appears
+
+SVA Custom Content Channel
+
+SVA creates its own Kolibri channel via Kolibri Studio:
+
+K-12 curriculum aligned to Singapore/China standards
+
+Localized for Ghana, Portugal, Sweden deployment
+
+Videos, PDFs, H5P interactives, quizzes
+
+Teacher training materials
+
+Supplemented by imported Khan Academy, PhET content
+
+Use Case Differentiation
+
+Device
+
+Primary Use
+
+Context
+
+SVA Phone
+
+Video lessons, flashcards, quick quizzes
+
+At home, on the go, during travel
+
+SVA Laptop
+
+Writing, coding, extended work, projects
+
+In classroom, learning center
+
+Hub (Pi)
+
+Content server, progress tracking, sync
+
+Learning center backbone
+
+
+
+Part V: Drizzle Schema Additions
+
+Add to existing schema for device fleet management:
+
+Device Registry
+
+export const svaDevices = pgTable('sva_devices', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  deviceType: text('device_type').notNull(), // 'phone' | 'laptop' | 'hub'
+  serialNumber: text('serial_number').unique().notNull(),
+  hardwareRevision: text('hardware_revision'), // 'v1.0', 'v1.1', etc.
+  firmwareVersion: text('firmware_version'),
+  syncNodeId: uuid('sync_node_id').references(() => syncNodes.id),
+  assignedStudentId: uuid('assigned_student_id').references(() => students.id),
+  assignedTeacherId: uuid('assigned_teacher_id').references(() => teacherProfiles.id),
+  status: text('status').default('active'), // 'active' | 'maintenance' | 'lost' | 'retired'
+  lastSeenAt: timestamp('last_seen_at'),
+  batteryHealthPercent: integer('battery_health_percent'),
+  storageUsedMb: integer('storage_used_mb'),
+  notes: text('notes'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+});
+
+Device Maintenance Log
+
+export const deviceMaintenanceLog = pgTable('device_maintenance_log', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  deviceId: uuid('device_id').references(() => svaDevices.id).notNull(),
+  maintenanceType: text('maintenance_type').notNull(), // 'repair' | 'replacement' | 'firmware_update' | 'battery_swap'
+  description: text('description'),
+  performedBy: text('performed_by'),
+  partsUsed: jsonb('parts_used'), // [{part: 'battery', cost: 3.00}]
+  costUsd: decimal('cost_usd', { precision: 10, scale: 2 }),
+  performedAt: timestamp('performed_at').defaultNow(),
+  nextMaintenanceDue: timestamp('next_maintenance_due')
+});
+
+Content Package Deployment
+
+export const deviceContentDeployments = pgTable('device_content_deployments', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  deviceId: uuid('device_id').references(() => svaDevices.id).notNull(),
+  contentPackageId: uuid('content_package_id').references(() => contentPackages.id).notNull(),
+  deployedAt: timestamp('deployed_at').defaultNow(),
+  deployedVersion: text('deployed_version'),
+  deploymentMethod: text('deployment_method'), // 'hub_sync' | 'direct_download' | 'sd_card'
+  verificationChecksum: text('verification_checksum'),
+  status: text('status').default('pending') // 'pending' | 'downloading' | 'installed' | 'failed'
+});
+
+
+
+Part VI: Cursor Execution Tickets
+
+EPIC 11: SVA Education Device
+
+Goal: Device fleet management and integration with offline-first architecture
+
+Ticket 11.1: Device Registry Schema
+
+File: src/db/schema/devices.ts
+
+Task: Implement svaDevices, deviceMaintenanceLog, deviceContentDeployments tables
+
+Relations: Link to syncNodes, students, teacherProfiles, contentPackages
+
+Acceptance: Migration runs, relations resolve correctly
+
+Ticket 11.2: Device Registration API
+
+File: src/api/devices/register.ts
+
+Task: Endpoint for new device registration with serial number, hardware revision
+
+Validation: Unique serial, valid device type
+
+Acceptance: New phone/laptop can self-register on first boot
+
+Ticket 11.3: Device Assignment Flow
+
+File: src/api/devices/assign.ts
+
+Task: Assign device to student or teacher, track custody chain
+
+Business logic: One student = one phone, shared laptops tracked differently
+
+Acceptance: Admin can assign/reassign, history preserved
+
+Ticket 11.4: Device Health Monitoring
+
+File: src/api/devices/health.ts
+
+Task: Endpoint for devices to report battery health, storage, last sync
+
+Triggers: Alert when battery < 20% health, storage > 90% full
+
+Acceptance: Dashboard shows fleet health overview
+
+Ticket 11.5: Content Deployment Tracking
+
+File: src/api/devices/content.ts
+
+Task: Track which content packages are deployed to which devices
+
+Verification: Checksum validation ensures content integrity
+
+Acceptance: Can query which devices have which curriculum version
+
+Ticket 11.6: Maintenance Workflow
+
+File: src/api/devices/maintenance.ts
+
+Task: Log repairs, part replacements, firmware updates
+
+Reporting: Track maintenance costs, common failure modes
+
+Acceptance: Full device lifecycle visible in admin panel
+
+Ticket 11.7: Device Admin Dashboard
+
+File: src/components/admin/DeviceFleetDashboard.tsx
+
+Task: UI showing all devices, status, assignments, health
+
+Features: Filter by type/status/location, bulk actions
+
+Acceptance: Operations team can manage 1000+ devices efficiently
+
+
+
+Part VII: Sourcing & Manufacturing Strategy
+
+Phone Mainboard Sourcing
+
+Primary: Sincoole (Shenzhen)
+
+Contact: sales01@sincoole.com
+
+SC9863A mainboards with Android BSP
+
+Sample pricing: $15-25/unit for 5-10 units
+
+Alternative: Alibaba ODMs
+
+Search: "SC9863A mainboard ODM" or "SC9863A phone PCBA"
+
+Request bare PCB quotes without enclosure
+
+Reference Device Teardown
+
+Buy 5x SC9863A phones (~$40-50 each): Blackview A52, ZTE Blade A5/A7, Alcatel 1V
+
+Tear down, study PCB, use as reference for custom enclosure
+
+Laptop SoM Sourcing
+
+Radxa CM3 (Recommended)
+
+Source: radxa.com or Allnet distributor
+
+RPi CM4 compatible ΓÇö huge ecosystem of carrier boards
+
+$55 for 4GB/32GB configuration
+
+Alternatives
+
+Pine64 SOQuartz (RK3566) ΓÇö $35-75
+
+Radxa CM5 (RK3588S) ΓÇö $65-120 (overkill but future-proof)
+
+Enclosure Manufacturing
+
+Prototype Phase (10-100 units)
+
+3D print PETG shell + TPU bumpers
+
+Heat-set brass inserts for durability
+
+Cost: ~$20-30/enclosure
+
+Scale Phase (1000+ units)
+
+Injection molding ΓÇö tooling cost ~$5,000-15,000
+
+Per-unit cost drops to $2-5
+
+Partner with Shenzhen mold makers (Alibaba)
+
+Assembly Options
+
+Scale
+
+Approach
+
+Est. Cost/Unit
+
+1-100
+
+In-house / maker space assembly
+
+$5-10 labor
+
+100-1000
+
+Local assembly partner (Ghana)
+
+$3-5 labor
+
+1000+
+
+Shenzhen contract manufacturer
+
+$2-3 labor
+
+
+
+Part VIII: Program Economics
+
+Per-Student Cost
+
+Item
+
+Prototype
+
+At Scale (10K)
+
+SVA Phone (SC9863A, solar, rugged)
+
+$50
+
+$35
+
+SVA Laptop (RK3566, 11.6", rugged)
+
+$200
+
+$150
+
+TOTAL PER STUDENT
+
+$250
+
+$185
+
+Comparative Analysis
+
+Alternative
+
+Cost
+
+Chromebook (basic)
+
+$250-350
+
+iPad (education)
+
+$350-450
+
+OLPC XO (discontinued)
+
+$200
+
+SVA Phone + Laptop combo
+
+$185-250 Γ£ô
+
+SVA delivers two devices for less than a single iPad ΓÇö and they work offline.
+
+Infrastructure Cost (Per Learning Center)
+
+Item
+
+Cost
+
+Notes
+
+Raspberry Pi 4 (4GB) + case
+
+$55
+
+Kolibri server
+
+1TB SSD
+
+$50
+
+Content storage
+
+WiFi access point
+
+$25
+
+Student connections
+
+UPS / battery backup
+
+$50
+
+4-6 hours runtime
+
+Cables, misc
+
+$20
+
+
+
+TOTAL HUB COST
+
+~$200
+
+Serves 50+ students
+
+
+
+Part IX: Success Criteria
+
+Hardware Acceptance
+
+Phone survives 1m drop onto concrete (3 faces tested)
+
+Phone achieves 6+ hours video playback on full charge
+
+Solar charging delivers measurable current in direct sun
+
+Laptop achieves 6+ hours mixed use on full charge
+
+Laptop hinge survives 500 open/close cycles
+
+Both devices function in 40┬░C ambient temperature
+
+Software Acceptance
+
+Kolibri app installs and runs on phone (Android Go)
+
+Kolibri client runs on laptop (Armbian Linux)
+
+Content syncs successfully from hub to both devices
+
+Progress tracking works offline and syncs when online
+
+Device self-registers and reports health to admin dashboard
+
+Operational Acceptance
+
+Device can be registered, assigned, and tracked in fleet management
+
+Maintenance events are logged with parts and costs
+
+Content deployment status visible across fleet
+
+Admin can manage 1000+ devices efficiently
+
+Field Acceptance
+
+5 devices deployed to partner organization for 4-week field test
+
+Student and teacher feedback collected
+
+Failure modes documented and addressed
+
+Device survives real-world Ghana conditions
+
+
+
+Appendix: Quick Reference
+
+Supplier Contacts
+
+Component
+
+Supplier
+
+Contact
+
+SC9863A mainboard
+
+Sincoole
+
+sales01@sincoole.com
+
+Radxa CM3 SoM
+
+Radxa
+
+radxa.com
+
+Displays, batteries
+
+AliExpress ODMs
+
+Search by spec
+
+PCB fabrication
+
+JLCPCB
+
+jlcpcb.com
+
+Components
+
+LCSC
+
+lcsc.com
+
+Key Resources
+
+Kolibri Studio: studio.learningequality.org
+
+Kolibri Documentation: kolibri.readthedocs.io
+
+Armbian: armbian.com
+
+Open-source laptop reference: MNT Reform (mntre.com)
+
+Document Control
+
+Document
+
+EPIC 11: SVA Education Device ΓÇö Addendum
+
+Version
+
+1.0
+
+Date
+
+December 2025
+
+Status
+
+Ready for Cursor Implementation
+
+Parent Document
+
+SVA_Vision_Architecture_Cursor_Spec.docx
+
+ΓÇö End of EPIC 11 Addendum ΓÇö
+
+

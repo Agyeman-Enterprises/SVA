@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { auditLog, inspectionReports, users, userMemberships } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 

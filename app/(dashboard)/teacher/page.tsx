@@ -43,20 +43,19 @@ export default async function TeacherDashboard() {
   }
 
   // Get lesson assignments for this pod
-  let assignments = [];
-  if (membership.podId) {
-    assignments = await db
-      .select()
-      .from(lessonAssignments)
-      .where(eq(lessonAssignments.podId, membership.podId))
-      .limit(10);
-  }
+  const assignments = membership.podId
+    ? await db
+        .select()
+        .from(lessonAssignments)
+        .where(eq(lessonAssignments.podId, membership.podId))
+        .limit(10)
+    : [];
 
   // Get pending submissions (simplified - would need proper joins)
   const pendingSubmissions = await db
     .select()
     .from(submissions)
-    .where(eq(submissions.status, "submitted"))
+    .where(eq(submissions.status, "submitted" as any))
     .limit(10);
 
   return (

@@ -1,9 +1,23 @@
 import { db } from "@/db";
-import { users, userMemberships, enrollments, pods, podCourseAssignments, courseVersions, courses } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import {
+  users,
+  userMemberships,
+  enrollments,
+  pods,
+  podCourseAssignments,
+  courseVersions,
+  courses,
+  progressEvents,
+  submissions,
+} from "@/db/schema";
+import { subjects } from "@/db/schema/academic";
+import { eq, and, count, sql } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 import Link from "next/link";
+import SVAHeader from "@/app/components/SVAHeader";
+import StatCard from "@/app/components/StatCard";
+import CourseCard from "@/app/components/CourseCard";
 
 export default async function StudentDashboard() {
   const cookieStore = await cookies();
@@ -36,159 +50,233 @@ export default async function StudentDashboard() {
     return <div>Student not enrolled in a pod</div>;
   }
 
-  // Get enrollment
-  const [enrollment] = await db
-    .select()
-    .from(enrollments)
-    .where(and(eq(enrollments.studentUserId, payload.userId), eq(enrollments.podId, membership.podId)))
-    .limit(1);
-
   // Get pod
   const [pod] = await db.select().from(pods).where(eq(pods.id, membership.podId)).limit(1);
 
-  // Get assigned courses for this pod
+  // Get assigned courses for this pod with subject information
   const assignedCourses = await db
     .select({
       assignment: podCourseAssignments,
       courseVersion: courseVersions,
       course: courses,
+      subject: subjects,
     })
     .from(podCourseAssignments)
     .innerJoin(courseVersions, eq(podCourseAssignments.courseVersionId, courseVersions.id))
     .innerJoin(courses, eq(courseVersions.courseId, courses.id))
+    .innerJoin(subjects, eq(courses.subjectId, subjects.id))
     .where(eq(podCourseAssignments.podId, membership.podId));
 
+  // Get stats
+  const [completedLessons] = await db
+    .select({ count: count() })
+    .from(progressEvents)
+    .where(
+      and(
+        eq(progressEvents.studentUserId, payload.userId),
+        eq(progressEvents.eventType, "lesson_completed" as any)
+      )
+    );
+
+  const [pendingSubmissions] = await db
+    .select({ count: count() })
+    .from(submissions)
+    .where(
+      and(
+        eq(submissions.studentUserId, payload.userId),
+        eq(submissions.status, "submitted" as any)
+      )
+    );
+
+  // Calculate progress for each course (simplified - would need proper calculation)
+  const coursesWithProgress = await Promise.all(
+    assignedCourses.map(async ({ course, courseVersion, subject }) => {
+      // Get lesson count and completed count for this course version
+      // This is simplified - in production, you'd calculate actual progress
+      return {
+        course,
+        courseVersion,
+        subject,
+        progress: Math.floor(Math.random() * 80) + 10, // Placeholder
+      };
+    })
+  );
+
+  const firstName = user.displayName.split(" ")[0] || user.displayName;
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Student Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Welcome, {user.displayName}
-        </p>
-        {pod && (
-          <p className="text-sm text-gray-500 mt-1">
-            Pod: {pod.name} ({pod.languageCode})
-          </p>
-        )}
-      </div>
+    <>
+      <SVAHeader userName={firstName} userRole={payload.role} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">My Courses</h2>
-          {assignedCourses.length === 0 ? (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-2">📚</div>
-              <p className="text-gray-500 dark:text-gray-400">No courses assigned to your pod</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {assignedCourses.slice(0, 5).map(({ assignment, courseVersion, course }) => (
-                <Link
-                  key={assignment.id}
-                  href={`/student/courses/${course.id}/version/${courseVersion.id}`}
-                  className="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 dark:text-white truncate">
-                        {course.title}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Version {courseVersion.version}
-                      </p>
-                    </div>
-                    <svg
-                      className="w-5 h-5 text-gray-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </Link>
-              ))}
-              {assignedCourses.length > 5 && (
-                <Link
-                  href="/student/courses"
-                  className="block text-center text-sm text-blue-600 dark:text-blue-400 hover:underline pt-2"
-                >
-                  View all {assignedCourses.length} courses →
-                </Link>
-              )}
-            </div>
-          )}
-        </div>
+      {/* Stats */}
+      <section className="sva-stats">
+        <StatCard
+          value="12"
+          label="Day Streak"
+          variant="streak"
+          decoration="🔥"
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+          }
+        />
+        <StatCard
+          value="2,450"
+          label="Knowledge Points"
+          variant="points"
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+          }
+        />
+        <StatCard
+          value={assignedCourses.length}
+          label="Active Courses"
+          variant="courses"
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          }
+        />
+        <StatCard
+          value={pendingSubmissions.count}
+          label="Pending Tasks"
+          variant="assignments"
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+          }
+        />
+      </section>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Enrollment Status</h2>
-          {enrollment ? (
-            <div>
-              <div className="flex items-center space-x-2 mb-3">
-                <div
-                  className={`w-3 h-3 rounded-full ${
-                    enrollment.active
-                      ? "bg-green-500"
-                      : "bg-gray-400"
-                  }`}
-                />
-                <p
-                  className={`font-medium ${
-                    enrollment.active
-                      ? "text-green-600 dark:text-green-400"
-                      : "text-gray-500 dark:text-gray-400"
-                  }`}
-                >
-                  {enrollment.active ? "Active Enrollment" : "Inactive"}
-                </p>
-              </div>
-              <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                <p>
-                  Enrolled: {new Date(enrollment.createdAt).toLocaleDateString()}
-                </p>
-                {pod && (
-                  <p>
-                    Pod: {pod.name} ({pod.languageCode})
-                  </p>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="text-center py-4">
-              <p className="text-gray-500 dark:text-gray-400">Not enrolled</p>
-            </div>
-          )}
-        </div>
-        
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Quick Links</h2>
-          <div className="space-y-2">
-            <Link
-              href="/student/courses"
-              className="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
-            >
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">📚</span>
-                <span className="font-medium text-gray-900 dark:text-white">All Courses</span>
-              </div>
-            </Link>
-            <Link
-              href="/student/engineering"
-              className="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
-            >
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">🔧</span>
-                <span className="font-medium text-gray-900 dark:text-white">Engineering Projects</span>
-              </div>
+      {/* Main Grid */}
+      <div className="sva-content-grid">
+        {/* Courses Section */}
+        <section className="sva-section sva-courses-section">
+          <div className="sva-section-header">
+            <h2>Continue Learning</h2>
+            <Link href="/student/courses" className="sva-link">
+              View All Courses →
             </Link>
           </div>
-        </div>
+
+          {assignedCourses.length === 0 ? (
+            <div className="sva-card" style={{ padding: 'var(--space-2xl)', textAlign: 'center' }}>
+              <div style={{ fontSize: '3rem', marginBottom: 'var(--space-md)' }}>📚</div>
+              <p style={{ color: 'var(--sva-gray-500)' }}>No courses assigned to your pod</p>
+            </div>
+          ) : (
+            <div className="sva-courses-grid">
+              {coursesWithProgress.slice(0, 4).map(({ course, courseVersion, subject, progress }) => (
+                <CourseCard
+                  key={courseVersion.id}
+                  courseId={course.id}
+                  courseTitle={course.title}
+                  version={courseVersion.version}
+                  status={courseVersion.status}
+                  description={course.description || undefined}
+                  progress={progress}
+                  category={subject?.name?.toUpperCase() || subject?.code || undefined}
+                  nextLesson="Next Lesson"
+                />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Sidebar */}
+        <aside className="sva-sidebar-content">
+          {/* Announcements */}
+          <section className="sva-announcements">
+            <div className="sva-section-header">
+              <h2>Announcements</h2>
+            </div>
+            <div className="sva-announcement-list">
+              <div className="sva-announcement-item">
+                <div className="sva-announcement-icon">📅</div>
+                <div className="sva-announcement-content">
+                  <p className="sva-announcement-title">Family Unit Showcase This Friday!</p>
+                  <span className="sva-announcement-time">2 hours ago</span>
+                </div>
+              </div>
+              <div className="sva-announcement-item">
+                <div className="sva-announcement-icon">ℹ️</div>
+                <div className="sva-announcement-content">
+                  <p className="sva-announcement-title">New Mentorship Pairings Posted</p>
+                  <span className="sva-announcement-time">1 day ago</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Upcoming Due */}
+          <section className="sva-upcoming">
+            <div className="sva-section-header">
+              <h2>Upcoming Due</h2>
+            </div>
+            <div className="sva-assignment-list">
+              <div className="sva-assignment-item">
+                <div className="sva-assignment-priority high"></div>
+                <div className="sva-assignment-content">
+                  <p className="sva-assignment-title">Ecosystem Journal Entry</p>
+                  <span className="sva-assignment-course">Environmental Stewardship</span>
+                </div>
+                <span className="sva-assignment-due">2 days</span>
+              </div>
+              <div className="sva-assignment-item">
+                <div className="sva-assignment-priority medium"></div>
+                <div className="sva-assignment-content">
+                  <p className="sva-assignment-title">Short Story Draft</p>
+                  <span className="sva-assignment-course">Creative Writing</span>
+                </div>
+                <span className="sva-assignment-due">5 days</span>
+              </div>
+              <div className="sva-assignment-item">
+                <div className="sva-assignment-priority low"></div>
+                <div className="sva-assignment-content">
+                  <p className="sva-assignment-title">Business Plan Outline</p>
+                  <span className="sva-assignment-course">Entrepreneurship</span>
+                </div>
+                <span className="sva-assignment-due">1 week</span>
+              </div>
+            </div>
+          </section>
+
+          {/* Quick Actions */}
+          <section className="sva-quick-actions">
+            <div className="sva-section-header">
+              <h2>Quick Actions</h2>
+            </div>
+            <div className="sva-actions-grid">
+              <button className="sva-action-btn">
+                <span className="sva-action-icon">📝</span>
+                <span>Start Quiz</span>
+              </button>
+              <button className="sva-action-btn">
+                <span className="sva-action-icon">📚</span>
+                <span>Resources</span>
+              </button>
+              <button className="sva-action-btn">
+                <span className="sva-action-icon">👥</span>
+                <span>Study Group</span>
+              </button>
+              <button className="sva-action-btn">
+                <span className="sva-action-icon">🎯</span>
+                <span>Goals</span>
+              </button>
+            </div>
+          </section>
+        </aside>
       </div>
-    </div>
+    </>
   );
 }
+

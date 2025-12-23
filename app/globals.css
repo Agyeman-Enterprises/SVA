@@ -1,28 +1,135 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito:wght@400;500;600;700&display=swap');
+@import './styles/sva-components.css';
+@import '../Dashboard.css';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* SVA Brand Colors */
+  --sva-green: #4a7c4e;
+  --sva-green-dark: #3a6340;
+  --sva-green-light: #5d9461;
+  --sva-green-subtle: #e8f0e8;
+  --sva-gold: #f5a623;
+  --sva-gold-dark: #d4900a;
+  --sva-gold-light: #ffc859;
+  --sva-gold-subtle: #fef8eb;
+  --sva-cream: #fdfbf7;
+  --sva-cream-dark: #f5f2ed;
+  --sva-white: #ffffff;
+  --sva-gray-100: #f7f7f7;
+  --sva-gray-200: #e8e8e8;
+  --sva-gray-300: #d1d1d1;
+  --sva-gray-400: #9a9a9a;
+  --sva-gray-500: #6b6b6b;
+  --sva-gray-600: #4a4a4a;
+  --sva-gray-700: #2d2d2d;
+  --sva-gray-800: #1a1a1a;
+  --sva-success: #22c55e;
+  --sva-warning: #f59e0b;
+  --sva-error: #ef4444;
+  --sva-info: #3b82f6;
+  
+  /* Typography */
+  --font-display: 'Crimson Pro', Georgia, serif;
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Borders */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(74, 124, 78, 0.08);
+  --shadow-md: 0 4px 12px rgba(74, 124, 78, 0.1);
+  --shadow-lg: 0 8px 30px rgba(74, 124, 78, 0.12);
+  --shadow-hover: 0 12px 40px rgba(74, 124, 78, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  
+  /* Layout */
+  --sidebar-width: 260px;
+  --header-height: 80px;
+  
+  /* Legacy Tailwind compatibility */
+  --background: var(--sva-cream);
+  --foreground: var(--sva-gray-700);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background: var(--sva-cream);
+  color: var(--sva-gray-700);
+  line-height: 1.6;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Typography utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* SVA Design System Utilities */
+.sva-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+@media (max-width: 1400px) {
+  .sva-content-grid {
+    grid-template-columns: 1fr 320px;
+  }
+  .sva-courses-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sva-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .sva-sidebar {
+    display: none;
+  }
+  .sva-main {
+    margin-left: 0;
+  }
+  .sva-content-grid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,12 +1,17 @@
 import Link from "next/link";
+import "./CourseCard.css";
 
 interface CourseCardProps {
   courseId: string;
   courseTitle: string;
-  version: string;
+  version: string | number;
   status: string;
   description?: string;
   progress?: number;
+  category?: string;
+  instructor?: string;
+  nextLesson?: string;
+  imageUrl?: string;
 }
 
 export default function CourseCard({
@@ -15,54 +20,60 @@ export default function CourseCard({
   version,
   status,
   description,
-  progress,
+  progress = 0,
+  category,
+  instructor,
+  nextLesson,
+  imageUrl,
 }: CourseCardProps) {
-  const statusColors: Record<string, string> = {
-    draft: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
-    approved: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
-    active: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
-    archived: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
-  };
-
   return (
-    <Link
-      href={`/student/courses/${courseId}/version/${version}`}
-      className="block bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 p-6"
-    >
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex-1">
-          {courseTitle}
-        </h3>
-        <span
-          className={`px-2 py-1 text-xs font-medium rounded ${
-            statusColors[status] || statusColors.draft
-          }`}
-        >
-          {status}
-        </span>
-      </div>
-      {description && (
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-          {description}
-        </p>
-      )}
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-gray-500 dark:text-gray-400">Version {version}</span>
-        {progress !== undefined && (
-          <div className="flex items-center space-x-2">
-            <div className="w-24 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="text-gray-600 dark:text-gray-400 font-medium">
-              {progress}%
-            </span>
-          </div>
+    <article className="sva-course-card">
+      {/* Course Image */}
+      <div
+        className="sva-course-image"
+        style={{
+          backgroundImage: imageUrl
+            ? `url(${imageUrl})`
+            : "linear-gradient(135deg, var(--sva-green) 0%, var(--sva-green-light) 100%)",
+        }}
+      >
+        {category && (
+          <span className="sva-course-category">{category}</span>
         )}
       </div>
-    </Link>
+
+      {/* Course Content */}
+      <div className="sva-course-content">
+        <h3 className="sva-course-title">{courseTitle}</h3>
+        {instructor && (
+          <p className="sva-course-instructor">{instructor}</p>
+        )}
+
+        {/* Progress */}
+        <div className="sva-course-progress">
+          <div className="sva-progress-bar">
+            <div
+              className="sva-progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="sva-progress-text">{progress}% complete</span>
+        </div>
+
+        {/* Next Lesson */}
+        {nextLesson && (
+          <div className="sva-course-next">
+            <span className="sva-next-label">Next:</span>
+            <span className="sva-next-lesson">{nextLesson}</span>
+          </div>
+        )}
+
+        {/* Continue Button */}
+        <Link href={`/student/courses/${courseId}/version/${String(version)}`} className="sva-continue-btn">
+          Continue →
+        </Link>
+      </div>
+    </article>
   );
 }
 

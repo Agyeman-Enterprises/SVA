@@ -73,7 +73,7 @@ export default async function MyCoursesPage() {
             No courses assigned yet
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Your pod hasn't been assigned any courses. Check back soon!
+            Your pod hasn&apos;t been assigned any courses. Check back soon!
           </p>
         </div>
       ) : (

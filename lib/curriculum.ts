@@ -63,6 +63,7 @@ export async function verifyCurriculumIntegrity(
   }
 
   // Integrity verified by isImmutable flag and approval status
+  // Note: approvedAt timestamp would be in approvalRecords table, not courseVersions
   return version.isImmutable && version.status === "approved";
 }
 
@@ -87,19 +88,21 @@ export async function getScaffoldedLesson(
     return null;
   }
 
-  // Get activities with scaffolding
+  // Get activities for this lesson
   const lessonActivities = await db
     .select()
     .from(activities)
-    .where(eq(activities.lessonId, lessonId))
-    .orderBy(activities.sequence);
+    .where(eq(activities.lessonId, lessonId));
 
   // Extract scaffolding for the teacher's tier
+  // Note: Scaffolding structure would be stored in activity metadata or separate table
+  // For now, return activities as-is (scaffolding implementation pending)
   const scaffoldedActivities = lessonActivities.map((activity) => {
-    const scaffolding = activity.content.scaffolding?.[teacherTier];
+    // Scaffolding would come from lessonAssignments.scaffoldingConfig or similar
+    // This is a placeholder - full scaffolding engine to be implemented
     return {
       ...activity,
-      scaffoldedInstructions: scaffolding || activity.content.instructions,
+      scaffoldedInstructions: activity.prompt, // Use prompt as base for now
     };
   });
 
@@ -139,9 +142,11 @@ export async function getCurriculumVersionHistory(courseId: string) {
     id: version.id,
     version: version.version,
     status: version.status,
-    approvedAt: version.approvedAt,
-    supersededBy: version.supersededBy,
+    isImmutable: version.isImmutable,
+    // approvedAt would be in approvalRecords table, not courseVersions
+    // supersededBy would be determined by checking if newer versions exist
     createdAt: version.createdAt,
+    updatedAt: version.updatedAt,
   }));
 }
 

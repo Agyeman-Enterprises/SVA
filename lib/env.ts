@@ -55,6 +55,21 @@ export function getEnv(): Env {
 /**
  * Get environment variables (validated)
  * Use this instead of process.env directly
+ * Lazy evaluation - only validates when accessed
  */
-export const env = getEnv();
+let cachedEnv: Env | null = null;
+
+function getCachedEnv(): Env {
+  if (!cachedEnv) {
+    cachedEnv = getEnv();
+  }
+  return cachedEnv;
+}
+
+// Export as object with lazy validation
+export const env = new Proxy({} as Env, {
+  get(_target, prop) {
+    return getCachedEnv()[prop as keyof Env];
+  },
+});
 

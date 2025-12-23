@@ -1,0 +1,164 @@
+/* SVA Header Component - Pure CSS (NO Tailwind) */
+/* Reference: Dashboard.css lines 225-376 */
+
+.sva-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--sva-gray-200);
+}
+
+.sva-header-left {
+  flex: 1;
+}
+
+.sva-greeting {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--sva-gray-800);
+  margin-bottom: var(--space-xs);
+}
+
+.sva-user-name {
+  color: var(--sva-green);
+}
+
+.sva-subgreeting {
+  color: var(--sva-gray-500);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+}
+
+.sva-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.sva-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--sva-white);
+  border: 1px solid var(--sva-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-md);
+  min-width: 280px;
+  transition: all var(--transition-fast);
+}
+
+.sva-search:focus-within {
+  border-color: var(--sva-green);
+  box-shadow: 0 0 0 3px var(--sva-green-subtle);
+}
+
+.sva-search svg {
+  width: 18px;
+  height: 18px;
+  color: var(--sva-gray-400);
+  flex-shrink: 0;
+}
+
+.sva-search input {
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--sva-gray-700);
+  width: 100%;
+  outline: none;
+}
+
+.sva-search input::placeholder {
+  color: var(--sva-gray-400);
+}
+
+.sva-notification-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: var(--sva-white);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--sva-gray-200);
+}
+
+.sva-notification-btn:hover {
+  background: var(--sva-green-subtle);
+  border-color: var(--sva-green-subtle);
+}
+
+.sva-notification-btn svg {
+  width: 20px;
+  height: 20px;
+  color: var(--sva-gray-600);
+}
+
+.sva-notification-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--sva-gold);
+  border-radius: 50%;
+  border: 2px solid var(--sva-white);
+}
+
+.sva-user-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+  padding-right: var(--space-md);
+  background: var(--sva-white);
+  border: 1px solid var(--sva-gray-200);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sva-user-menu:hover {
+  border-color: var(--sva-green);
+}
+
+.sva-avatar {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--sva-green), var(--sva-green-light));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sva-white);
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: var(--font-body);
+}
+
+.sva-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sva-user-fullname {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sva-gray-700);
+  font-family: var(--font-body);
+}
+
+.sva-user-role {
+  font-size: 0.75rem;
+  color: var(--sva-gray-500);
+  font-family: var(--font-body);
+}
+

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVA Learning Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sva-green: #4a7c4e;
+      --sva-green-dark: #3a6340;
+      --sva-green-light: #5d9461;
+      --sva-green-subtle: #e8f0e8;
+      --sva-gold: #f5a623;
+      --sva-gold-dark: #d4900a;
+      --sva-gold-light: #ffc859;
+      --sva-gold-subtle: #fef8eb;
+      --sva-cream: #fdfbf7;
+      --sva-cream-dark: #f5f2ed;
+      --sva-white: #ffffff;
+      --sva-gray-100: #f7f7f7;
+      --sva-gray-200: #e8e8e8;
+      --sva-gray-300: #d1d1d1;
+      --sva-gray-400: #9a9a9a;
+      --sva-gray-500: #6b6b6b;
+      --sva-gray-600: #4a4a4a;
+      --sva-gray-700: #2d2d2d;
+      --sva-gray-800: #1a1a1a;
+      --sva-success: #22c55e;
+      --sva-warning: #f59e0b;
+      --sva-error: #ef4444;
+      --sva-info: #3b82f6;
+      --font-display: 'Crimson Pro', Georgia, serif;
+      --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --shadow-sm: 0 1px 3px rgba(74, 124, 78, 0.08);
+      --shadow-md: 0 4px 12px rgba(74, 124, 78, 0.1);
+      --shadow-lg: 0 8px 30px rgba(74, 124, 78, 0.12);
+      --shadow-hover: 0 12px 40px rgba(74, 124, 78, 0.15);
+      --transition-fast: 150ms ease;
+      --transition-base: 250ms ease;
+      --transition-slow: 400ms ease;
+      --sidebar-width: 260px;
+      --header-height: 80px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-body); background: var(--sva-cream); color: var(--sva-gray-700); line-height: 1.6; }
+
+    .sva-dashboard { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sva-sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0; width: var(--sidebar-width);
+      background: var(--sva-white); border-right: 1px solid var(--sva-gray-200);
+      display: flex; flex-direction: column; padding: var(--space-lg); z-index: 100;
+    }
+
+    .sva-logo { display: flex; align-items: center; gap: var(--space-md); padding-bottom: var(--space-xl); border-bottom: 1px solid var(--sva-gray-200); margin-bottom: var(--space-lg); }
+    .sva-logo-icon { width: 48px; height: 48px; color: var(--sva-green); flex-shrink: 0; }
+    .sva-logo-icon svg { width: 100%; height: 100%; }
+    .sva-logo-text { display: flex; flex-direction: column; }
+    .sva-logo-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--sva-green); line-height: 1.2; }
+    .sva-logo-subtitle { font-family: var(--font-display); font-size: 0.85rem; color: var(--sva-gold); font-weight: 500; }
+
+    .sva-nav { display: flex; flex-direction: column; gap: var(--space-xs); flex: 1; }
+    .sva-nav-item {
+      display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md);
+      border: none; background: transparent; border-radius: var(--radius-md); cursor: pointer;
+      transition: all var(--transition-fast); color: var(--sva-gray-500);
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; text-align: left; width: 100%;
+    }
+    .sva-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .sva-nav-item:hover { background: var(--sva-green-subtle); color: var(--sva-green); }
+    .sva-nav-item.active { background: var(--sva-green); color: var(--sva-white); }
+    .sva-badge { margin-left: auto; background: var(--sva-gold); color: var(--sva-white); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+    .sva-sidebar-footer { display: flex; flex-direction: column; gap: var(--space-xs); padding-top: var(--space-lg); border-top: 1px solid var(--sva-gray-200); }
+
+    /* Main */
+    .sva-main { flex: 1; margin-left: var(--sidebar-width); padding: var(--space-xl) var(--space-2xl); min-height: 100vh; }
+
+    /* Header */
+    .sva-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl); padding-bottom: var(--space-lg); border-bottom: 1px solid var(--sva-gray-200); }
+    .sva-greeting { font-family: var(--font-display); font-size: 1.75rem; font-weight: 600; color: var(--sva-gray-800); margin-bottom: var(--space-xs); }
+    .sva-user-name { color: var(--sva-green); }
+    .sva-subgreeting { color: var(--sva-gray-500); font-size: 0.95rem; }
+    .sva-header-right { display: flex; align-items: center; gap: var(--space-lg); }
+
+    .sva-search {
+      display: flex; align-items: center; gap: var(--space-sm);
+      background: var(--sva-white); border: 1px solid var(--sva-gray-200);
+      border-radius: var(--radius-lg); padding: var(--space-sm) var(--space-md); min-width: 280px;
+      transition: all var(--transition-fast);
+    }
+    .sva-search:focus-within { border-color: var(--sva-green); box-shadow: 0 0 0 3px var(--sva-green-subtle); }
+    .sva-search svg { width: 18px; height: 18px; color: var(--sva-gray-400); }
+    .sva-search input { border: none; background: transparent; font-family: var(--font-body); font-size: 0.9rem; color: var(--sva-gray-700); width: 100%; outline: none; }
+    .sva-search input::placeholder { color: var(--sva-gray-400); }
+
+    .sva-notification-btn {
+      position: relative; width: 42px; height: 42px; border: none; background: var(--sva-white);
+      border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: all var(--transition-fast); border: 1px solid var(--sva-gray-200);
+    }
+    .sva-notification-btn:hover { background: var(--sva-green-subtle); border-color: var(--sva-green-subtle); }
+    .sva-notification-btn svg { width: 20px; height: 20px; color: var(--sva-gray-600); }
+    .sva-notification-dot { position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; background: var(--sva-gold); border-radius: 50%; border: 2px solid var(--sva-white); }
+
+    .sva-user-menu {
+      display: flex; align-items: center; gap: var(--space-md); padding: var(--space-sm);
+      padding-right: var(--space-md); background: var(--sva-white); border: 1px solid var(--sva-gray-200);
+      border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition-fast);
+    }
+    .sva-user-menu:hover { border-color: var(--sva-green); }
+    .sva-avatar { width: 38px; height: 38px; background: linear-gradient(135deg, var(--sva-green), var(--sva-green-light)); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--sva-white); font-weight: 700; font-size: 1rem; }
+    .sva-user-info { display: flex; flex-direction: column; }
+    .sva-user-fullname { font-size: 0.9rem; font-weight: 600; color: var(--sva-gray-700); }
+    .sva-user-role { font-size: 0.75rem; color: var(--sva-gray-500); }
+
+    /* Stats */
+    .sva-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); margin-bottom: var(--space-xl); }
+    .sva-stat-card {
+      background: var(--sva-white); border-radius: var(--radius-lg); padding: var(--space-lg);
+      display: flex; align-items: center; gap: var(--space-md); border: 1px solid var(--sva-gray-200);
+      transition: all var(--transition-base); position: relative; overflow: hidden;
+    }
+    .sva-stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .sva-stat-icon { width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sva-stat-icon svg { width: 24px; height: 24px; }
+    .sva-stat-streak .sva-stat-icon { background: var(--sva-gold-subtle); color: var(--sva-gold); }
+    .sva-stat-points .sva-stat-icon { background: linear-gradient(135deg, #fef3c7, #fde68a); color: var(--sva-gold-dark); }
+    .sva-stat-courses .sva-stat-icon { background: var(--sva-green-subtle); color: var(--sva-green); }
+    .sva-stat-assignments .sva-stat-icon { background: #ede9fe; color: #7c3aed; }
+    .sva-stat-content { display: flex; flex-direction: column; }
+    .sva-stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--sva-gray-800); line-height: 1.2; }
+    .sva-stat-label { font-size: 0.8rem; color: var(--sva-gray-500); font-weight: 500; }
+    .sva-stat-decoration { position: absolute; right: var(--space-md); font-size: 1.5rem; opacity: 0.8; }
+
+    /* Grid */
+    .sva-content-grid { display: grid; grid-template-columns: 1fr 360px; gap: var(--space-xl); }
+    .sva-section { margin-bottom: var(--space-xl); }
+    .sva-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg); }
+    .sva-section-header h2 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--sva-gray-800); }
+    .sva-link { color: var(--sva-green); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color var(--transition-fast); }
+    .sva-link:hover { color: var(--sva-green-dark); }
+
+    /* Courses */
+    .sva-courses-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .sva-course-card { background: var(--sva-white); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--sva-gray-200); transition: all var(--transition-base); }
+    .sva-course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--sva-green-subtle); }
+    .sva-course-image { height: 140px; background-size: cover; background-position: center; position: relative; }
+    .sva-course-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.4)); }
+    .sva-course-category { position: absolute; top: var(--space-md); left: var(--space-md); background: var(--sva-white); color: var(--sva-green); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm); z-index: 1; }
+    .sva-course-content { padding: var(--space-lg); }
+    .sva-course-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--sva-gray-800); margin-bottom: var(--space-xs); line-height: 1.3; }
+    .sva-course-instructor { font-size: 0.85rem; color: var(--sva-gray-500); margin-bottom: var(--space-md); }
+    .sva-course-progress { margin-bottom: var(--space-md); }
+    .sva-progress-bar { height: 6px; background: var(--sva-gray-200); border-radius: 3px; overflow: hidden; margin-bottom: var(--space-xs); }
+    .sva-progress-fill { height: 100%; background: linear-gradient(90deg, var(--sva-green), var(--sva-green-light)); border-radius: 3px; transition: width var(--transition-slow); }
+    .sva-progress-text { font-size: 0.75rem; color: var(--sva-gray-500); }
+    .sva-course-next { display: flex; gap: var(--space-xs); font-size: 0.85rem; margin-bottom: var(--space-md); padding: var(--space-sm); background: var(--sva-cream); border-radius: var(--radius-sm); }
+    .sva-next-label { color: var(--sva-gray-500); }
+    .sva-next-lesson { color: var(--sva-gray-700); font-weight: 600; }
+    .sva-continue-btn { width: 100%; padding: var(--space-sm) var(--space-md); background: var(--sva-green); color: var(--sva-white); border: none; border-radius: var(--radius-md); font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all var(--transition-fast); }
+    .sva-continue-btn:hover { background: var(--sva-green-dark); transform: translateY(-1px); }
+
+    /* Sidebar Content */
+    .sva-sidebar-content { display: flex; flex-direction: column; gap: var(--space-lg); }
+    .sva-announcements, .sva-upcoming, .sva-quick-actions { background: var(--sva-white); border-radius: var(--radius-lg); padding: var(--space-lg); border: 1px solid var(--sva-gray-200); }
+    .sva-announcement-list, .sva-assignment-list { display: flex; flex-direction: column; gap: var(--space-md); }
+    .sva-announcement-item { display: flex; gap: var(--space-md); padding: var(--space-md); background: var(--sva-cream); border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-fast); }
+    .sva-announcement-item:hover { background: var(--sva-green-subtle); }
+    .sva-announcement-icon { font-size: 1.25rem; flex-shrink: 0; }
+    .sva-announcement-content { flex: 1; }
+    .sva-announcement-title { font-size: 0.9rem; font-weight: 600; color: var(--sva-gray-700); margin-bottom: var(--space-xs); }
+    .sva-announcement-time { font-size: 0.75rem; color: var(--sva-gray-400); }
+
+    .sva-assignment-item { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--sva-cream); border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-fast); }
+    .sva-assignment-item:hover { background: var(--sva-gold-subtle); }
+    .sva-assignment-priority { width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0; }
+    .sva-assignment-priority.high { background: var(--sva-error); }
+    .sva-assignment-priority.medium { background: var(--sva-gold); }
+    .sva-assignment-priority.low { background: var(--sva-green); }
+    .sva-assignment-content { flex: 1; }
+    .sva-assignment-title { font-size: 0.9rem; font-weight: 600; color: var(--sva-gray-700); margin-bottom: 2px; }
+    .sva-assignment-course { font-size: 0.75rem; color: var(--sva-gray-500); }
+    .sva-assignment-due { font-size: 0.8rem; font-weight: 600; color: var(--sva-gray-600); white-space: nowrap; }
+
+    .sva-actions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+    .sva-action-btn { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); padding: var(--space-lg) var(--space-md); background: var(--sva-cream); border: 1px solid transparent; border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-fast); font-family: var(--font-body); }
+    .sva-action-btn:hover { background: var(--sva-green-subtle); border-color: var(--sva-green); transform: translateY(-2px); }
+    .sva-action-icon { font-size: 1.5rem; }
+    .sva-action-btn span:last-child { font-size: 0.8rem; font-weight: 600; color: var(--sva-gray-600); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .sva-course-card, .sva-stat-card { animation: fadeIn 0.4s ease forwards; }
+    .sva-course-card:nth-child(1) { animation-delay: 0.1s; }
+    .sva-course-card:nth-child(2) { animation-delay: 0.15s; }
+    .sva-course-card:nth-child(3) { animation-delay: 0.2s; }
+    .sva-course-card:nth-child(4) { animation-delay: 0.25s; }
+
+    @media (max-width: 1400px) { .sva-content-grid { grid-template-columns: 1fr 320px; } .sva-courses-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 1024px) { .sva-stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .sva-sidebar { display: none; } .sva-main { margin-left: 0; } .sva-content-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="sva-dashboard">
+    <!-- Sidebar -->
+    <aside class="sva-sidebar">
+      <div class="sva-logo">
+        <div class="sva-logo-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="25" width="30" height="25" fill="currentColor" opacity="0.9"/>
+            <ellipse cx="30" cy="20" rx="18" ry="15" fill="currentColor"/>
+            <path d="M30 35 Q25 45 20 50 M30 35 Q35 45 40 50" stroke="#fdfbf7" stroke-width="3" fill="none"/>
+            <path d="M10 28 Q20 32 30 28 Q40 32 50 28" stroke="#f5a623" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <div class="sva-logo-text">
+          <span class="sva-logo-title">Scientia Vitae</span>
+          <span class="sva-logo-subtitle">Academy</span>
+        </div>
+      </div>
+
+      <nav class="sva-nav">
+        <button class="sva-nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Overview</span>
+        </button>
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span>My Courses</span>
+        </button>
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Assignments</span>
+        </button>
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Family Unit</span>
+        </button>
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Schedule</span>
+        </button>
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Messages</span>
+          <span class="sva-badge">3</span>
+        </button>
+      </nav>
+
+      <div class="sva-sidebar-footer">
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </button>
+        <button class="sva-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="sva-main">
+      <header class="sva-header">
+        <div class="sva-header-left">
+          <h1 class="sva-greeting">Good morning, <span class="sva-user-name">Maya</span></h1>
+          <p class="sva-subgreeting">Ready to continue your learning journey?</p>
+        </div>
+        
+        <div class="sva-header-right">
+          <div class="sva-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Search courses, lessons...">
+          </div>
+          
+          <button class="sva-notification-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="sva-notification-dot"></span>
+          </button>
+          
+          <div class="sva-user-menu">
+            <div class="sva-avatar">M</div>
+            <div class="sva-user-info">
+              <span class="sva-user-fullname">Maya Johnson</span>
+              <span class="sva-user-role">7th Grade • Oak Family</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats -->
+      <section class="sva-stats">
+        <div class="sva-stat-card sva-stat-streak">
+          <div class="sva-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="sva-stat-content">
+            <span class="sva-stat-value">12</span>
+            <span class="sva-stat-label">Day Streak</span>
+          </div>
+          <div class="sva-stat-decoration">🔥</div>
+        </div>
+        <div class="sva-stat-card sva-stat-points">
+          <div class="sva-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="sva-stat-content">
+            <span class="sva-stat-value">2,450</span>
+            <span class="sva-stat-label">Knowledge Points</span>
+          </div>
+        </div>
+        <div class="sva-stat-card sva-stat-courses">
+          <div class="sva-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="sva-stat-content">
+            <span class="sva-stat-value">4</span>
+            <span class="sva-stat-label">Active Courses</span>
+          </div>
+        </div>
+        <div class="sva-stat-card sva-stat-assignments">
+          <div class="sva-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="sva-stat-content">
+            <span class="sva-stat-value">3</span>
+            <span class="sva-stat-label">Pending Tasks</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Grid -->
+      <div class="sva-content-grid">
+        <section class="sva-section sva-courses-section">
+          <div class="sva-section-header">
+            <h2>Continue Learning</h2>
+            <a href="#" class="sva-link">View All Courses →</a>
+          </div>
+          
+          <div class="sva-courses-grid">
+            <article class="sva-course-card">
+              <div class="sva-course-image" style="background-image: url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400')">
+                <span class="sva-course-category">Science</span>
+              </div>
+              <div class="sva-course-content">
+                <h3 class="sva-course-title">Environmental Stewardship</h3>
+                <p class="sva-course-instructor">Dr. Sarah Chen</p>
+                <div class="sva-course-progress">
+                  <div class="sva-progress-bar"><div class="sva-progress-fill" style="width: 68%"></div></div>
+                  <span class="sva-progress-text">68% complete</span>
+                </div>
+                <div class="sva-course-next">
+                  <span class="sva-next-label">Next:</span>
+                  <span class="sva-next-lesson">Composting Basics</span>
+                </div>
+                <button class="sva-continue-btn">Continue →</button>
+              </div>
+            </article>
+
+            <article class="sva-course-card">
+              <div class="sva-course-image" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400')">
+                <span class="sva-course-category">Language Arts</span>
+              </div>
+              <div class="sva-course-content">
+                <h3 class="sva-course-title">Creative Writing Workshop</h3>
+                <p class="sva-course-instructor">Mr. James Okonkwo</p>
+                <div class="sva-course-progress">
+                  <div class="sva-progress-bar"><div class="sva-progress-fill" style="width: 45%"></div></div>
+                  <span class="sva-progress-text">45% complete</span>
+                </div>
+                <div class="sva-course-next">
+                  <span class="sva-next-label">Next:</span>
+                  <span class="sva-next-lesson">Character Development</span>
+                </div>
+                <button class="sva-continue-btn">Continue →</button>
+              </div>
+            </article>
+
+            <article class="sva-course-card">
+              <div class="sva-course-image" style="background-image: url('https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400')">
+                <span class="sva-course-category">Business</span>
+              </div>
+              <div class="sva-course-content">
+                <h3 class="sva-course-title">Entrepreneurship Fundamentals</h3>
+                <p class="sva-course-instructor">Ms. Linda Park</p>
+                <div class="sva-course-progress">
+                  <div class="sva-progress-bar"><div class="sva-progress-fill" style="width: 82%"></div></div>
+                  <span class="sva-progress-text">82% complete</span>
+                </div>
+                <div class="sva-course-next">
+                  <span class="sva-next-label">Next:</span>
+                  <span class="sva-next-lesson">Market Research</span>
+                </div>
+                <button class="sva-continue-btn">Continue →</button>
+              </div>
+            </article>
+
+            <article class="sva-course-card">
+              <div class="sva-course-image" style="background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400')">
+                <span class="sva-course-category">Mathematics</span>
+              </div>
+              <div class="sva-course-content">
+                <h3 class="sva-course-title">Mixed-Age Mathematics</h3>
+                <p class="sva-course-instructor">Dr. Ahmed Hassan</p>
+                <div class="sva-course-progress">
+                  <div class="sva-progress-bar"><div class="sva-progress-fill" style="width: 31%"></div></div>
+                  <span class="sva-progress-text">31% complete</span>
+                </div>
+                <div class="sva-course-next">
+                  <span class="sva-next-label">Next:</span>
+                  <span class="sva-next-lesson">Geometry in Nature</span>
+                </div>
+                <button class="sva-continue-btn">Continue →</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <aside class="sva-sidebar-content">
+          <section class="sva-section sva-announcements">
+            <div class="sva-section-header"><h2>Announcements</h2></div>
+            <div class="sva-announcement-list">
+              <div class="sva-announcement-item">
+                <div class="sva-announcement-icon">📅</div>
+                <div class="sva-announcement-content">
+                  <p class="sva-announcement-title">Family Unit Showcase This Friday!</p>
+                  <span class="sva-announcement-time">2 hours ago</span>
+                </div>
+              </div>
+              <div class="sva-announcement-item">
+                <div class="sva-announcement-icon">ℹ️</div>
+                <div class="sva-announcement-content">
+                  <p class="sva-announcement-title">New Mentorship Pairings Posted</p>
+                  <span class="sva-announcement-time">1 day ago</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="sva-section sva-upcoming">
+            <div class="sva-section-header"><h2>Upcoming Due</h2></div>
+            <div class="sva-assignment-list">
+              <div class="sva-assignment-item">
+                <div class="sva-assignment-priority high"></div>
+                <div class="sva-assignment-content">
+                  <p class="sva-assignment-title">Ecosystem Journal Entry</p>
+                  <span class="sva-assignment-course">Environmental Stewardship</span>
+                </div>
+                <span class="sva-assignment-due">2 days</span>
+              </div>
+              <div class="sva-assignment-item">
+                <div class="sva-assignment-priority medium"></div>
+                <div class="sva-assignment-content">
+                  <p class="sva-assignment-title">Short Story Draft</p>
+                  <span class="sva-assignment-course">Creative Writing</span>
+                </div>
+                <span class="sva-assignment-due">5 days</span>
+              </div>
+              <div class="sva-assignment-item">
+                <div class="sva-assignment-priority low"></div>
+                <div class="sva-assignment-content">
+                  <p class="sva-assignment-title">Business Plan Outline</p>
+                  <span class="sva-assignment-course">Entrepreneurship</span>
+                </div>
+                <span class="sva-assignment-due">1 week</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="sva-section sva-quick-actions">
+            <div class="sva-section-header"><h2>Quick Actions</h2></div>
+            <div class="sva-actions-grid">
+              <button class="sva-action-btn"><span class="sva-action-icon">📝</span><span>Start Quiz</span></button>
+              <button class="sva-action-btn"><span class="sva-action-icon">📚</span><span>Resources</span></button>
+              <button class="sva-action-btn"><span class="sva-action-icon">👥</span><span>Study Group</span></button>
+              <button class="sva-action-btn"><span class="sva-action-icon">🎯</span><span>Goals</span></button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
