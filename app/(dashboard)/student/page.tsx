@@ -73,43 +73,120 @@ export default async function StudentDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">My Courses</h2>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">My Courses</h2>
           {assignedCourses.length === 0 ? (
-            <p className="text-gray-500">No courses assigned to your pod</p>
+            <div className="text-center py-8">
+              <div className="text-4xl mb-2">📚</div>
+              <p className="text-gray-500 dark:text-gray-400">No courses assigned to your pod</p>
+            </div>
           ) : (
-            <ul className="space-y-2">
-              {assignedCourses.map(({ assignment, courseVersion, course }) => (
-                <li key={assignment.id}>
-                  <Link
-                    href={`/student/courses/${course.id}/version/${courseVersion.id}`}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    {course.title} (v{courseVersion.version})
-                  </Link>
-                  <span className="ml-2 text-sm text-gray-500">
-                    {courseVersion.status}
-                  </span>
-                </li>
+            <div className="space-y-3">
+              {assignedCourses.slice(0, 5).map(({ assignment, courseVersion, course }) => (
+                <Link
+                  key={assignment.id}
+                  href={`/student/courses/${course.id}/version/${courseVersion.id}`}
+                  className="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 dark:text-white truncate">
+                        {course.title}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Version {courseVersion.version}
+                      </p>
+                    </div>
+                    <svg
+                      className="w-5 h-5 text-gray-400 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </Link>
               ))}
-            </ul>
+              {assignedCourses.length > 5 && (
+                <Link
+                  href="/student/courses"
+                  className="block text-center text-sm text-blue-600 dark:text-blue-400 hover:underline pt-2"
+                >
+                  View all {assignedCourses.length} courses →
+                </Link>
+              )}
+            </div>
           )}
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Enrollment Status</h2>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Enrollment Status</h2>
           {enrollment ? (
             <div>
-              <p className={enrollment.active ? "text-green-600" : "text-gray-500"}>
-                {enrollment.active ? "✓ Active" : "Inactive"}
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Enrolled: {new Date(enrollment.createdAt).toLocaleDateString()}
-              </p>
+              <div className="flex items-center space-x-2 mb-3">
+                <div
+                  className={`w-3 h-3 rounded-full ${
+                    enrollment.active
+                      ? "bg-green-500"
+                      : "bg-gray-400"
+                  }`}
+                />
+                <p
+                  className={`font-medium ${
+                    enrollment.active
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-gray-500 dark:text-gray-400"
+                  }`}
+                >
+                  {enrollment.active ? "Active Enrollment" : "Inactive"}
+                </p>
+              </div>
+              <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                <p>
+                  Enrolled: {new Date(enrollment.createdAt).toLocaleDateString()}
+                </p>
+                {pod && (
+                  <p>
+                    Pod: {pod.name} ({pod.languageCode})
+                  </p>
+                )}
+              </div>
             </div>
           ) : (
-            <p className="text-gray-500">Not enrolled</p>
+            <div className="text-center py-4">
+              <p className="text-gray-500 dark:text-gray-400">Not enrolled</p>
+            </div>
           )}
+        </div>
+        
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Quick Links</h2>
+          <div className="space-y-2">
+            <Link
+              href="/student/courses"
+              className="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+            >
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">📚</span>
+                <span className="font-medium text-gray-900 dark:text-white">All Courses</span>
+              </div>
+            </Link>
+            <Link
+              href="/student/engineering"
+              className="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+            >
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">🔧</span>
+                <span className="font-medium text-gray-900 dark:text-white">Engineering Projects</span>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
