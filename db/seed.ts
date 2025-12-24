@@ -9,6 +9,9 @@
  * Run with: npm run db:seed
  */
 
+import * as dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
+
 import { db } from "./index";
 import {
   districts,

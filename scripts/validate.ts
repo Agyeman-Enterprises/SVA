@@ -25,7 +25,7 @@ import {
   subjects,
   gradeBands,
 } from "../db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and, sql, asc } from "drizzle-orm";
 
 interface ValidationResult {
   test: string;
@@ -179,7 +179,7 @@ async function validate() {
         console.log(results[results.length - 1].message);
       } else {
         // THE MASTER QUERY
-        const masterQuery = await db
+        const masterQueryRaw = await db
           .select({
             lessonId: lessons.id,
             lessonTitle: lessons.title,
@@ -193,14 +193,6 @@ async function validate() {
             gradeBandCode: gradeBands.code,
             podName: pods.name,
             podLanguage: pods.languageCode,
-            assignmentDate: podCourseAssignments.assignedAt,
-            why: sql<string>`CONCAT(
-              'Student is in pod ', ${pods.name}, 
-              ' (', ${pods.languageCode}, '), ',
-              'which is assigned course version ', ${courseVersions.version}, 
-              ' (', ${courseVersions.status}, ') of ', ${courses.title}, 
-              ' (', ${subjects.name}, ', ', ${gradeBands.code}, ')'
-            )`,
           })
           .from(lessons)
           .innerJoin(units, eq(lessons.unitId, units.id))
@@ -211,8 +203,13 @@ async function validate() {
           .innerJoin(podCourseAssignments, eq(podCourseAssignments.courseVersionId, courseVersions.id))
           .innerJoin(pods, eq(podCourseAssignments.podId, pods.id))
           .where(eq(pods.id, studentPodId))
-          .orderBy(units.unitNumber, lessons.lessonNumber)
           .limit(20);
+
+        // Add the "why" explanation after the query
+        const masterQuery = masterQueryRaw.map((row) => ({
+          ...row,
+          why: `Student is in pod ${row.podName} (${row.podLanguage}), which is assigned course version ${row.courseVersion} (${row.courseVersionStatus}) of ${row.courseTitle} (${row.subjectName}, ${row.gradeBandCode})`,
+        }));
 
         const test5 = masterQuery.length > 0;
         results.push({
